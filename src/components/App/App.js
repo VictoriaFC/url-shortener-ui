@@ -4,23 +4,49 @@ import { getUrls } from '../../apiCalls';
 import UrlContainer from '../UrlContainer/UrlContainer';
 import UrlForm from '../UrlForm/UrlForm';
 
-export class App extends Component {
-  constructor(props) {
-    super(props);
+class App extends Component {
+  constructor() {
+    super();
     this.state = {
-      urls: []
+      urls: [], 
+			error: ''
     }
   }
 
-  componentDidMount() {
-  }
+  componentDidMount = () => {
+		getUrls()
+		.then(getUrls => { 
+			const urlArr = getUrls.urls
+			this.setState({urls: [...this.state.urls, ...urlArr]})
+		})
+		.catch(error => console.log(error.message))
+  }	
+
+	addUrl = (newUrl) => {
+		fetch('http://localhost:3001/api/v1/urls', {
+			method: 'POST', 
+			body: JSON.stringify(newUrl), 
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+		.then((response) => {
+			if(!response.ok) {
+				throw Error('uh-oh')
+			} else {
+				return response.json()
+			}
+		})
+		.then(url => this.setState({urls: [...this.state.urls, url]}))
+		.catch(error => console.log(error.message))
+	}
 
   render() {
     return (
       <main className="App">
         <header>
           <h1>URL Shortener</h1>
-          <UrlForm />
+          <UrlForm addUrl={this.addUrl} />
         </header>
 
         <UrlContainer urls={this.state.urls}/>
