@@ -19,7 +19,7 @@ const UrlContainer = ({urls}) => {
   });
 console.log('urlsEls', urlEls)
   return (
-    <section>
+    <section className="url-container">
       { urlEls.length > 0 ? urlEls : <p>No urls yet! Find some to shorten!</p> }
     </section>
   )
