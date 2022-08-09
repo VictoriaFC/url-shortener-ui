@@ -1,20 +1,26 @@
 import React from 'react';
 import './UrlContainer.css';
+import UrlCard from '../../components/UrlCard/UrlCard'
 
-const UrlContainer = props => {
-  const urlEls = props.urls.map(url => {
+const UrlContainer = ({urls}) => {
+	console.log('urls', urls)
+  const urlEls = urls.map(url => {
+
+		console.log('url', url)
     return (
-      <div className="url">
-        <h3>{url.title}</h3>
-        <a href={url.short_url} target="blank">{url.short_url}</a>
-        <p>{url.long_url}</p>
-      </div>
+			<UrlCard 
+				id={url.id}
+				key={url.id}
+				title={url.title}
+				long_url={url.long_url}
+				short_url={url.short_url}
+			/>
     )
   });
-
+console.log('urlsEls', urlEls)
   return (
     <section>
-      { urlEls.length ? urlEls : <p>No urls yet! Find some to shorten!</p> }
+      { urlEls.length > 0 ? urlEls : <p>No urls yet! Find some to shorten!</p> }
     </section>
   )
 }
